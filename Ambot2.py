@@ -3,6 +3,7 @@ from alive_progress import alive_bar
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep
+from retrying import retry
 # import pyautogui
 
 class ambot():
@@ -13,6 +14,7 @@ class ambot():
         bot = self.bot
         bot.get('https://www.amazon.in/')
 
+    @retry
     def search(self):
         tripod = 'B09CCSM3T9'
         bot = self.bot
@@ -22,6 +24,7 @@ class ambot():
         productSearch.send_keys(tripod)
         productSearch.send_keys(Keys.RETURN)
 
+    @retry
     def click(self):
          bot = self.bot
          product = bot.find_element_by_class_name('s-image')
@@ -29,6 +32,7 @@ class ambot():
          product.click()
         # pyautogui.click(x=362,y=510)
 
+    @retry
     def tabs(self):
         bot = self.bot
         ProductID = ['B09CGG1JZ1','B09CG9JMVH','B09CG181X1','B09CCSXFKV','B09CCY1D1F','B09C34VF11','B09B4WWF75','B09B3K28VK','B09B2QQL95','B09B233DM6']
@@ -39,12 +43,13 @@ class ambot():
             handle = handles[x-1]
             bot.switch_to.window(handle)
             sleep(1)
+            retry(stop_max_delay = 3)
             productSearch = bot.find_element_by_name("field-keywords")
             productSearch.clear()
             sleep(0.5)
             productSearch.send_keys(ProductID[i])
             productSearch.send_keys(Keys.RETURN)
-            sleep(3)
+            
             self.click()
             
         for j in reversed(handles):
@@ -58,6 +63,7 @@ class ambot():
             # bot.close()
             # bot.switch_to.window(main)
     
+    @retry
     def close(self):
         bot = self.bot
         bot.quit()
@@ -70,13 +76,12 @@ def perform():
     sleep(3)
     start.click()
     sleep(2)
-    with alive_bar(5) as bar:
-        for i in range(5):
-            sleep(0.1)
-            bar()
+    with alive_bar(10) as bar:
+        for i in range(10):
             start.tabs()
-            if i == 4:
-                print("\n\t Task Completed")
+            if i == 9:
+                print("Task Completed\n")
                 start.close()
-            
+            sleep(0.5)
+            bar()
 perform()
