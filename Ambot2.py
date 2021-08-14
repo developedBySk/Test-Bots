@@ -35,21 +35,20 @@ class ambot():
     @retry
     def tabs(self):
         bot = self.bot
-        ProductID = ['B09CGG1JZ1','B09CG9JMVH','B09CG181X1','B09CCSXFKV','B09CCY1D1F','B09C34VF11','B09B4WWF75','B09B3K28VK','B09B2QQL95','B09B233DM6']
+        ProductID = ['B09CGG1JZ1','B09B5VHWJT','B09CG181X1','B09CCSXFKV','B09CCY1D1F','B09C34VF11','B09B4WWF75','B09B3K28VK','B09B2QQL95','B09B233DM6']
 
         for i in range(len(ProductID)-1):
             handles = bot.window_handles
             x = len(handles)
             handle = handles[x-1]
             bot.switch_to.window(handle)
-            sleep(1)
+            sleep(2)
             retry(stop_max_delay = 3)
             productSearch = bot.find_element_by_name("field-keywords")
             productSearch.clear()
             sleep(0.5)
             productSearch.send_keys(ProductID[i])
-            productSearch.send_keys(Keys.RETURN)
-            
+            productSearch.send_keys(Keys.RETURN) 
             self.click()
             
         for j in reversed(handles):
@@ -76,10 +75,10 @@ def perform():
     sleep(3)
     start.click()
     sleep(2)
-    with alive_bar(10) as bar:
-        for i in range(10):
+    with alive_bar(100) as bar:
+        for i in range(100):
             start.tabs()
-            if i == 9:
+            if i == 99:
                 print("Task Completed\n")
                 start.close()
             sleep(0.5)
